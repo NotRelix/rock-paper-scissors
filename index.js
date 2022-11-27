@@ -4,4 +4,10 @@ function getComputerChoice()
     return guess;
 }
 
-console.log(getComputerChoice());
+function playerSelection()
+{
+    let guess = prompt("Rock, Paper, Scissor? ");
+    return guess.toLowerCase();
+}
+
+console.log(playerSelection());
