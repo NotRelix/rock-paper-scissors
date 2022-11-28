@@ -22,24 +22,38 @@ function playerSelection()
     return guess;
 }
 
-function playRound(player, computer)
-{
-    if (player === "Rock" && computer === "Scissor")
-        return "You win! Rock beats Scissor";
-    else if (player === "Paper" && computer === "Rock")
-        return "You win! Paper beats Rock";
-    else if (player === "Scissor" && computer === "Paper")
-        return "You win! Scissor beats Paper";
-
+function playRound(player, computer) {
+    let output = "";
+    if (player === "Rock" && computer === "Scissor") {
+        output += "You win! Rock beats Scissor";
+        playerScore++;
+    }
+    else if (player === "Paper" && computer === "Rock") {
+        output += "You win! Paper beats Rock";
+        playerScore++;
+    }
+    else if (player === "Scissor" && computer === "Paper") {
+        output += "You win! Scissor beats Paper";
+        playerScore++;
+    }
+        
     else if (player === computer)
-        return "Draw";
+        output += "Draw";
     
-    else if (computer === "Rock")
-        return "You lose! Paper beats Rock";
-    else if (computer === "Paper")
-        return "You lose! Scissor beats Paper";
-    else
-        return "You lose! Rock beats Scissor";
+    else if (computer === "Rock") {
+        output += "You lose! Paper beats Rock";
+        computerScore++;
+    }
+    else if (computer === "Paper") {
+        output += "You lose! Scissor beats Paper";
+        computerScore++;
+    }
+    else {
+        output += "You lose! Rock beats Scissor";
+        computerScore++;
+    }
+    
+    return output;
 }
 
 function game()
@@ -50,7 +64,16 @@ function game()
         let computer = computerSelection();
         console.log(`${player} vs ${computer}`)
         console.log(playRound(player, computer));
+        console.log(`Score: ${playerScore} - ${computerScore}`);
     }
+    if (playerScore > computerScore)
+        console.log("Congrats, You Won!");
+    else if (playerScore < computerScore)
+        console.log("Better luck next time!");
+    else
+        console.log("Draw!!!");
 }
 
+let playerScore = 0;
+let computerScore = 0;
 game();
