@@ -23,37 +23,34 @@ function playerSelection()
 }
 
 function playRound(player, computer) {
-    let output = "";
     if (player === "Rock" && computer === "Scissor") {
-        output += "You win! Rock beats Scissor";
+        winner.textContent = "You win! Rock beats Scissor";
         playerScore++;
     }
     else if (player === "Paper" && computer === "Rock") {
-        output += "You win! Paper beats Rock";
+        winner.textContent = "You win! Paper beats Rock";
         playerScore++;
     }
     else if (player === "Scissor" && computer === "Paper") {
-        output += "You win! Scissor beats Paper";
+        winner.textContent = "You win! Scissor beats Paper";
         playerScore++;
     }
         
     else if (player === computer)
-        output += "Draw";
+        winner.textContent = "Draw";
     
     else if (computer === "Rock") {
-        output += "You lose! Paper beats Rock";
+        winner.textContent = "You lose! Paper beats Rock";
         computerScore++;
     }
     else if (computer === "Paper") {
-        output += "You lose! Scissor beats Paper";
+        winner.textContent = "You lose! Scissor beats Paper";
         computerScore++;
     }
     else {
-        output += "You lose! Rock beats Scissor";
+        winner.textContent = "You lose! Rock beats Scissor";
         computerScore++;
     }
-    
-    return output;
 }
 
 function game()
@@ -66,14 +63,74 @@ function game()
         console.log(playRound(player, computer));
         console.log(`Score: ${playerScore} - ${computerScore}`);
     }
-    if (playerScore > computerScore)
-        console.log("Congrats, You Won!");
-    else if (playerScore < computerScore)
-        console.log("Better luck next time!");
-    else
-        console.log("Draw!!!");
+}
+
+function gameOver()
+{   
+    if (playerScore > computerScore) {
+        winner.textContent = 'Congrats, You Won!';
+        body.style.cssText = 'background-color: lightgreen;';
+    }
+    else if (playerScore < computerScore) {
+        winner.textContent = 'Better luck next time!';
+        body.style.cssText = 'background-color: tomato;';
+    }
+    else {
+        winner.textContent = 'Draw!!!';
+        body.style.cssText = 'background-color: yellow;';
+    }
 }
 
 let playerScore = 0;
 let computerScore = 0;
-game();
+
+const buttons = document.querySelectorAll('button');
+const container = document.querySelector('.container');
+const tempText = document.querySelector('.temp');
+const winnerContainer = document.querySelector('.winner');
+const body = document.querySelector('body');
+
+const div = document.createElement('div');
+const paraPlayer = document.createElement('p');
+const paraComputer = document.createElement('p');
+let winner = document.createElement('p');
+const picks = document.createElement('h3');
+
+buttons.forEach(button => {
+    button.addEventListener('click', function () {
+        let player = button.getAttribute('id');
+        let computer = computerSelection();
+
+        if (container.contains(tempText)) {
+            container.removeChild(tempText);
+        }
+
+        if (playerScore >= 5 || computerScore >= 5) {
+            // winnerContainer.removeChild(winner);
+            playerScore = 0;
+            computerScore = 0;
+        }
+
+        playRound(player, computer);
+        
+        div.classList.add('player');
+        paraPlayer.textContent = `Player: ${playerScore}`;
+        div.appendChild(paraPlayer);
+        
+        div.classList.add('computer');
+        paraComputer.textContent = `Computer: ${computerScore}`;
+        div.appendChild(paraComputer);
+
+        div.classList.add('result');
+        picks.textContent = `${player} vs ${computer}`;
+        div.appendChild(picks);
+        
+        body.style.cssText = '';
+
+        if (playerScore >= 5 || computerScore >= 5) {
+            gameOver();
+        }
+        winnerContainer.appendChild(winner);
+        container.appendChild(div);
+    });
+});
